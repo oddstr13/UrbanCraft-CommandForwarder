@@ -46,13 +46,20 @@ find tmp/ -type f -name '.git_dummy' -delete
 echo "Downloading Forge..."
 wget http://ken.wingedboot.com/forgemirror/files.minecraftforge.net/minecraftforge/minecraftforge-src-latest.zip -Ominecraftforge.zip || rm -f minecraftforge.zip
 if [ ! -f minecraftforge.zip ]; then
-  echo Failed to download MinecraftForge
+  echo "Failed to download MinecraftForge."
   cleanup
   exit 1
 fi
 echo "Unziping Forge..."
 unzip minecraftforge.zip
 rm -f minecraftforge.zip
+
+# Check if Forge got installed..
+if [[ ! -d forge ]]; then
+  echo "Failed to extract Forge."
+  cleanup
+  exit 1
+fi
 
 # Install MinecraftForge
 cd forge
@@ -112,10 +119,10 @@ pwd
 mkdir -p $WORKSPACE/output
 echo "Building JAR..."
 cd reobf/minecraft/
-jar cvf "${WORKSPACE}/output/${MOD}-core-${MC}-${VERSION}.jar" *
+jar cvf "${WORKSPACE}/output/${MOD}-${MC}-${VERSION}.jar" *
 
 
 # Cleanup
 cd $WORKSPACE
-rm -rf tmp/
-rm -rf forge/
+#rm -rf tmp/
+#rm -rf forge/
